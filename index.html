@@ -112,6 +112,7 @@
     const emailInput = document.getElementById('email');
     const submitBtn = document.getElementById('submit-btn');
     const container = document.getElementById('form-container');
+    const bonusText = document.querySelector('.bonus-text');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -133,8 +134,10 @@
         const data = await res.json().catch(() => ({}));
 
         if (data.success === false) {
+          bonusText.style.display = 'none';
           container.innerHTML = '<div class="message">You are already on the list.</div>';
         } else if (data.success === true) {
+          bonusText.style.display = 'none';
           container.innerHTML = '<div class="message">You are on the list. We will reach out before launch.</div>';
         } else {
           throw new Error('Unexpected response');
