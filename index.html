@@ -40,7 +40,13 @@
       font-size: 14px;
       color: #F07560;
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 12px;
+    }
+    .counter-text {
+      font-size: 14px;
+      color: #999999;
+      text-align: center;
+      margin-bottom: 24px;
     }
     form { width: 100%; max-width: 400px; }
     input {
@@ -98,6 +104,7 @@
   </div>
 
   <div class="bonus-text">Join early and get 10 bonus scans free when we launch.</div>
+  <div class="counter-text" id="counter-text">Join the early access list.</div>
 
   <div id="form-container">
     <form id="waitlist-form">
@@ -113,6 +120,14 @@
     const submitBtn = document.getElementById('submit-btn');
     const container = document.getElementById('form-container');
     const bonusText = document.querySelector('.bonus-text');
+    const counterText = document.getElementById('counter-text');
+
+    fetch('https://authenticabackend-production.up.railway.app/api/waitlist-count')
+      .then(r => r.json())
+      .then(data => {
+        if (data.count > 0) counterText.textContent = `Join ${data.count}+ others on the early access list.`;
+      })
+      .catch(() => {});
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -135,9 +150,11 @@
 
         if (data.success === false) {
           bonusText.style.display = 'none';
+          counterText.style.display = 'none';
           container.innerHTML = '<div class="message">You are already on the list.</div>';
         } else if (data.success === true) {
           bonusText.style.display = 'none';
+          counterText.style.display = 'none';
           container.innerHTML = '<div class="message">You are on the list. We will reach out before launch.</div>';
         } else {
           throw new Error('Unexpected response');
