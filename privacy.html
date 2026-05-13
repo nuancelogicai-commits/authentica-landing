@@ -35,6 +35,7 @@ main{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:120px 32p
 .contact-card{background:var(--card);border:1px solid var(--peach-border);border-radius:16px;padding:24px 28px;margin-top:16px}
 .contact-card p{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:6px;letter-spacing:0.05em}
 .contact-card a{color:var(--peach);text-decoration:none}
+.logo{font-size:64px;margin-bottom:24px;text-align:center}
 footer{border-top:1px solid var(--card-border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
 .footer-logo{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;letter-spacing:0.1em;background:linear-gradient(135deg,var(--peach),var(--peach2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .footer-copy{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;color:var(--dimmed)}
@@ -45,9 +46,10 @@ footer{border-top:1px solid var(--card-border);padding:32px 48px;display:flex;al
 <div class="ambient"></div>
 <nav>
   <a href="/" class="nav-logo">AUTHENTICA</a>
-  <a href="/" class="nav-back">← Back to Home</a>
+  <a href="#" onclick="window.close(); return false;" class="nav-back">← Back to Home</a>
 </nav>
 <main>
+  <div class="logo">🛡️</div>
   <h1 class="page-title">Privacy Policy</h1>
   <p class="page-date">LAST UPDATED: MAY 2, 2026</p>
   <div class="divider"></div>
@@ -100,7 +102,7 @@ footer{border-top:1px solid var(--card-border);padding:32px 48px;display:flex;al
   <div class="section">
     <h2>8. Your Rights</h2>
     <ul>
-      <li>Request deletion of any personal data we hold about you by contacting privacy@authentica.ai</li>
+      <li>Request deletion of any personal data we hold about you by contacting privacy@authenticaapp.com</li>
       <li>Opt out of push notifications at any time in your device Settings</li>
       <li>Revoke camera permission at any time in your device Settings</li>
     </ul>
@@ -121,8 +123,8 @@ footer{border-top:1px solid var(--card-border);padding:32px 48px;display:flex;al
     <p>If you have questions about this Privacy Policy please contact us:</p>
     <div class="contact-card">
       <p>Authentica LLC</p>
-      <p><a href="mailto:privacy@authentica.ai">privacy@authentica.ai</a></p>
-      <p><a href="https://authentica.ai">authentica.ai</a></p>
+      <p><a href="mailto:privacy@authenticaapp.com">privacy@authenticaapp.com</a></p>
+      <p><a href="https://authenticaapp.com">authenticaapp.com</a></p>
     </div>
   </div>
 </main>
