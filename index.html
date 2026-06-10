@@ -192,16 +192,17 @@
     position:fixed;inset:0;z-index:200;
     display:flex;align-items:center;justify-content:center;
     padding:20px;
-    background:rgba(0,0,0,.72);backdrop-filter:blur(8px);
+    background:rgba(0,0,0,.78);backdrop-filter:blur(8px);
     opacity:0;pointer-events:none;
     transition:opacity .35s ease;
   }
   .popup-overlay.visible{opacity:1;pointer-events:all}
   .popup-card{
-    background:#fff;color:#1a1a1a;border-radius:22px;
+    background:var(--ink);color:var(--bone);border-radius:22px;
     padding:32px 28px 26px;width:100%;max-width:390px;
     position:relative;
-    box-shadow:0 40px 100px rgba(0,0,0,.45);
+    border:1px solid var(--line);
+    box-shadow:0 40px 100px rgba(0,0,0,.7);
     transform:translateY(10px);
     transition:transform .35s ease;
   }
@@ -209,61 +210,59 @@
   .popup-x{
     position:absolute;top:14px;right:14px;
     background:none;border:none;font-size:18px;line-height:1;
-    color:#aaa;cursor:pointer;padding:6px 9px;border-radius:50%;
+    color:var(--muted);cursor:pointer;padding:6px 9px;border-radius:50%;
     transition:background .15s,color .15s;
   }
-  .popup-x:hover{background:#f0f0f0;color:#555}
+  .popup-x:hover{background:var(--card2);color:var(--bone)}
   .popup-header{
     display:flex;align-items:center;gap:9px;
     font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:.18em;
-    color:#0c0a09;margin-bottom:22px;
+    color:var(--bone);margin-bottom:22px;
   }
   /* two mini verdict cards mimicking the app */
   .popup-verdicts{
     display:flex;gap:10px;margin-bottom:22px;
   }
   .popup-verdict-card{
-    flex:1;background:#0c0a09;border-radius:12px;padding:14px 10px;text-align:center;
-    border:1px solid #2e211d;
+    flex:1;background:var(--bone);border-radius:12px;padding:14px 10px;text-align:center;
+    border:1px solid rgba(245,240,238,.15);
   }
-  .pvc-label{font-family:var(--mono);font-size:7px;letter-spacing:.22em;color:#F07868;margin-bottom:5px;text-transform:uppercase}
-  .pvc-verdict{font-family:var(--serif);font-size:12px;font-weight:700;letter-spacing:.06em;color:#F5F0EE;margin-bottom:4px}
-  .pvc-conf{font-family:var(--serif);font-size:26px;font-weight:700;color:#F5F0EE;line-height:1}
-  .pvc-conf.bad{color:#e05c4c}
+  .pvc-label{font-family:var(--mono);font-size:7px;letter-spacing:.22em;color:#c0544a;margin-bottom:5px;text-transform:uppercase}
+  .pvc-verdict{font-family:var(--serif);font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--ink);margin-bottom:4px}
+  .pvc-conf{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--ink);line-height:1}
   .popup-headline{
     font-family:var(--serif);font-size:22px;font-weight:700;
     text-align:center;letter-spacing:-.01em;line-height:1.2;
-    margin-bottom:7px;color:#0c0a09;
+    margin-bottom:7px;color:var(--bone);
   }
   .popup-sub{
-    font-size:13px;color:#777;text-align:center;margin-bottom:20px;line-height:1.5;
+    font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px;line-height:1.5;
   }
-  .popup-sub strong{color:#0c0a09}
+  .popup-sub strong{color:var(--bone)}
   #popup-form-wrap input[type="email"]{
-    width:100%;padding:13px 16px;border:1.5px solid #e0e0e0;border-radius:10px;
+    width:100%;padding:13px 16px;border:1.5px solid var(--line);border-radius:10px;
     font-size:15px;font-family:var(--sans);outline:none;margin-bottom:10px;
-    transition:border-color .2s;color:#1a1a1a;background:#fff;display:block;
+    transition:border-color .2s;color:var(--bone);background:var(--card);display:block;
   }
-  #popup-form-wrap input[type="email"]:focus{border-color:#F07868}
+  #popup-form-wrap input[type="email"]::placeholder{color:var(--muted)}
+  #popup-form-wrap input[type="email"]:focus{border-color:var(--coral)}
   #popup-btn{
-    width:100%;padding:15px;background:#0c0a09;color:#fff;
+    width:100%;padding:15px;background:var(--bone);color:var(--ink);
     border:none;border-radius:10px;font-family:var(--mono);
     font-size:11px;letter-spacing:.1em;text-transform:uppercase;
     cursor:pointer;transition:opacity .2s;font-weight:500;display:block;
   }
   #popup-btn:hover{opacity:.82}
   #popup-btn:disabled{opacity:.45;cursor:default}
-  .popup-fine{font-size:11px;color:#aaa;text-align:center;margin-top:11px;line-height:1.55}
-  .popup-fine a{color:#888;text-decoration:underline}
+  .popup-fine{font-size:11px;color:var(--muted);text-align:center;margin-top:11px;line-height:1.55}
+  .popup-fine a{color:var(--muted);text-decoration:underline}
+  .popup-fine a:hover{color:var(--bone)}
   /* success state */
   .popup-success{text-align:center;padding:4px 0}
-  .popup-success-icon{font-size:28px;margin-bottom:10px}
-  .popup-success-title{font-family:var(--serif);font-size:20px;font-weight:700;color:#0c0a09;margin-bottom:8px}
-  .popup-success-msg{font-size:13px;color:#666;line-height:1.6;margin-bottom:20px}
-  .popup-success-msg strong{color:#0c0a09}
-  .popup-success .store-badge-disabled{margin:0 auto;background:#f0f0f0;border-color:#ddd}
-  .popup-success .store-badge-disabled .sb-big{color:#0c0a09}
-  .popup-success .store-badge-disabled .sb-small{color:#555}
+  .popup-success-icon{font-size:28px;margin-bottom:10px;color:var(--coral)}
+  .popup-success-title{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--bone);margin-bottom:8px}
+  .popup-success-msg{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px}
+  .popup-success-msg strong{color:var(--bone)}
 
   @media (prefers-reduced-motion: reduce){
     *{animation:none!important;transition:none!important}
@@ -321,7 +320,7 @@
         <span class="corner tl"></span><span class="corner tr"></span>
         <span class="corner bl"></span><span class="corner br"></span>
         <!-- Shoe image: background stripped via canvas in JS below -->
-        <img id="shoe-img" class="scan-shoe" src="/shoe.jpg" alt="sneaker" crossorigin="anonymous">
+        <img id="shoe-img" class="scan-shoe" src="/shoe.jpg" alt="sneaker">
       </div>
       <div class="verdict-card">
         <p class="v-label">AUTHENTICA CERTIFICATE</p>
@@ -571,6 +570,8 @@
   }
 
   // ── Confidence count-up (hero phone mockup) ──────────────────────────────
+  // Triggered by IntersectionObserver when the phone comes into view,
+  // with a DOMContentLoaded fallback for browsers where IO misfires.
   const conf = document.getElementById('conf');
   const bar = document.getElementById('confbar');
   const target = 97.3;
@@ -580,17 +581,28 @@
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
       conf.textContent = target.toFixed(1); bar.style.width = target + '%'; return;
     }
-    const t0 = performance.now(), dur = 1800;
-    function tick(t) {
-      const p = Math.min((t - t0) / dur, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      conf.textContent = (eased * target).toFixed(1);
-      if (p < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-    bar.style.width = target + '%';
+    // Delay one frame so the bar's CSS transition sees the 0→target change
+    requestAnimationFrame(() => {
+      bar.style.width = target + '%';
+      const t0 = performance.now(), dur = 1800;
+      function tick(t) {
+        const p = Math.min((t - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        conf.textContent = (eased * target).toFixed(1);
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
   }
-  window.addEventListener('load', () => setTimeout(runCount, 500));
+  const phoneEl = document.querySelector('.phone-wrap');
+  if (phoneEl && 'IntersectionObserver' in window) {
+    const phoneIO = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { runCount(); phoneIO.disconnect(); }
+    }, { threshold: 0.3 });
+    phoneIO.observe(phoneEl);
+  }
+  // Fallback: run after DOM is ready regardless of scroll position
+  document.addEventListener('DOMContentLoaded', () => setTimeout(runCount, 1200));
 
   // ── Scroll reveals ────────────────────────────────────────────────────────
   const io = new IntersectionObserver(es => es.forEach(e => {
@@ -607,17 +619,19 @@
   const popupBtn = document.getElementById('popup-btn');
   const popupFormWrap = document.getElementById('popup-form-wrap');
 
-  // Show after 12 seconds unless user has already dismissed it
+  // Show after 10–15 seconds unless user has already dismissed it
   if (!localStorage.getItem(POPUP_KEY)) {
-    const delay = 10000 + Math.random() * 5000; // 10–15 seconds
+    const delay = 10000 + Math.random() * 5000;
     setTimeout(() => {
       popup.classList.add('visible');
+      document.body.style.overflow = 'hidden';
     }, delay);
   }
 
   function dismissPopup() {
     localStorage.setItem(POPUP_KEY, '1');
     popup.classList.remove('visible');
+    document.body.style.overflow = '';
   }
 
   closeBtn.addEventListener('click', dismissPopup);
