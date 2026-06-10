@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Authentica — Know What's Real. Instantly.</title>
 <meta name="description" content="AI-powered authentication for sneakers and apparel. Snap a few photos, get an expert-level verdict in seconds — with a certificate you can share.">
+<link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -96,7 +97,7 @@
   .corner.bl{bottom:10px;left:10px;border-right:none;border-top:none;border-bottom-left-radius:6px}
   .corner.br{bottom:10px;right:10px;border-left:none;border-top:none;border-bottom-right-radius:6px}
   @keyframes framepulse{0%,100%{opacity:1}50%{opacity:.45}}
-  .scan-shoe{width:120px;opacity:.95}
+  .scan-shoe{width:130px;height:130px;object-fit:contain}
   .verdict-card{background:var(--card);border:1px solid rgba(240,120,104,.45);border-radius:14px;padding:20px;text-align:center;
         box-shadow:0 0 36px rgba(240,120,104,.12)}
   .v-label{font-family:var(--mono);font-size:9px;letter-spacing:.3em;color:var(--coral);margin-bottom:6px}
@@ -178,6 +179,92 @@
   .rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
   .rv.in{opacity:1;transform:none}
 
+  /* ══════════════════════════════════════
+     FOUNDING MEMBER POPUP
+     Shows after 12s, never again once X is clicked.
+     APP INTEGRATION NOTE (for iOS team):
+       After Apple Sign In, POST {email} to /api/founding-check
+       on the Railway backend. If response is {founding_member: true},
+       trigger the Superwall "founding_member" campaign to show
+       the paywall with locked 50%-off pricing.
+  ══════════════════════════════════════ */
+  .popup-overlay{
+    position:fixed;inset:0;z-index:200;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.72);backdrop-filter:blur(8px);
+    opacity:0;pointer-events:none;
+    transition:opacity .35s ease;
+  }
+  .popup-overlay.visible{opacity:1;pointer-events:all}
+  .popup-card{
+    background:#fff;color:#1a1a1a;border-radius:22px;
+    padding:32px 28px 26px;width:100%;max-width:390px;
+    position:relative;
+    box-shadow:0 40px 100px rgba(0,0,0,.45);
+    transform:translateY(10px);
+    transition:transform .35s ease;
+  }
+  .popup-overlay.visible .popup-card{transform:none}
+  .popup-x{
+    position:absolute;top:14px;right:14px;
+    background:none;border:none;font-size:18px;line-height:1;
+    color:#aaa;cursor:pointer;padding:6px 9px;border-radius:50%;
+    transition:background .15s,color .15s;
+  }
+  .popup-x:hover{background:#f0f0f0;color:#555}
+  .popup-header{
+    display:flex;align-items:center;gap:9px;
+    font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:.18em;
+    color:#0c0a09;margin-bottom:22px;
+  }
+  /* two mini verdict cards mimicking the app */
+  .popup-verdicts{
+    display:flex;gap:10px;margin-bottom:22px;
+  }
+  .popup-verdict-card{
+    flex:1;background:#0c0a09;border-radius:12px;padding:14px 10px;text-align:center;
+    border:1px solid #2e211d;
+  }
+  .pvc-label{font-family:var(--mono);font-size:7px;letter-spacing:.22em;color:#F07868;margin-bottom:5px;text-transform:uppercase}
+  .pvc-verdict{font-family:var(--serif);font-size:12px;font-weight:700;letter-spacing:.06em;color:#F5F0EE;margin-bottom:4px}
+  .pvc-conf{font-family:var(--serif);font-size:26px;font-weight:700;color:#F5F0EE;line-height:1}
+  .pvc-conf.bad{color:#e05c4c}
+  .popup-headline{
+    font-family:var(--serif);font-size:22px;font-weight:700;
+    text-align:center;letter-spacing:-.01em;line-height:1.2;
+    margin-bottom:7px;color:#0c0a09;
+  }
+  .popup-sub{
+    font-size:13px;color:#777;text-align:center;margin-bottom:20px;line-height:1.5;
+  }
+  .popup-sub strong{color:#0c0a09}
+  #popup-form-wrap input[type="email"]{
+    width:100%;padding:13px 16px;border:1.5px solid #e0e0e0;border-radius:10px;
+    font-size:15px;font-family:var(--sans);outline:none;margin-bottom:10px;
+    transition:border-color .2s;color:#1a1a1a;background:#fff;display:block;
+  }
+  #popup-form-wrap input[type="email"]:focus{border-color:#F07868}
+  #popup-btn{
+    width:100%;padding:15px;background:#0c0a09;color:#fff;
+    border:none;border-radius:10px;font-family:var(--mono);
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    cursor:pointer;transition:opacity .2s;font-weight:500;display:block;
+  }
+  #popup-btn:hover{opacity:.82}
+  #popup-btn:disabled{opacity:.45;cursor:default}
+  .popup-fine{font-size:11px;color:#aaa;text-align:center;margin-top:11px;line-height:1.55}
+  .popup-fine a{color:#888;text-decoration:underline}
+  /* success state */
+  .popup-success{text-align:center;padding:4px 0}
+  .popup-success-icon{font-size:28px;margin-bottom:10px}
+  .popup-success-title{font-family:var(--serif);font-size:20px;font-weight:700;color:#0c0a09;margin-bottom:8px}
+  .popup-success-msg{font-size:13px;color:#666;line-height:1.6;margin-bottom:20px}
+  .popup-success-msg strong{color:#0c0a09}
+  .popup-success .store-badge-disabled{margin:0 auto;background:#f0f0f0;border-color:#ddd}
+  .popup-success .store-badge-disabled .sb-big{color:#0c0a09}
+  .popup-success .store-badge-disabled .sb-small{color:#555}
+
   @media (prefers-reduced-motion: reduce){
     *{animation:none!important;transition:none!important}
     .rv{opacity:1;transform:none}
@@ -216,7 +303,7 @@
     <h1>Know what's real.<br><em>Instantly.</em></h1>
     <p class="hero-sub">AI-powered authentication for sneakers and apparel. Snap a few photos and get an expert-level verdict in seconds — with a certificate you can share.</p>
     <div class="hero-ctas">
-      <!-- APP_STORE_LINK: wire up href once Apple approves listing -->
+      <!-- APP_STORE_LINK: swap <span> → <a href="LINK"> and remove pointer-events:none class once Apple approves -->
       <span class="store-badge-disabled" role="img" aria-label="App Store — coming soon">
         <span class="coming-soon-chip">Coming Soon</span>
         <svg viewBox="0 0 384 512" fill="currentColor"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
@@ -233,14 +320,8 @@
       <div class="scan-frame">
         <span class="corner tl"></span><span class="corner tr"></span>
         <span class="corner bl"></span><span class="corner br"></span>
-        <svg class="scan-shoe" viewBox="0 0 24 24" fill="none" stroke="#F07868" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-          <g transform="translate(24,0) scale(-1,1)">
-            <path d="M3.4 17.6 H20.6 Q21.8 17.6 21.8 16.4 V10.8 Q21.8 9.4 20.7 9 C19.9 8.7 18.9 8.5 18.1 8.6 C17.4 8.7 16.9 9.2 16.4 9.4 C15.9 8.6 15 8.4 14.3 8.9 C11.5 10.9 6.5 13.8 4 14.8 C2.9 15.2 2.2 15.9 2.2 16.5 Q2.2 17.6 3.4 17.6 Z"/>
-            <path d="M2.5 15.9 C7 16.6 18 16.6 21.7 15.9"/>
-            <path d="M18.4 8.6 C18 10.4 18 12.6 18.5 14"/>
-            <path d="M11.61 9.46 L12.45 10.94"/><path d="M9.55 10.64 L10.39 12.12"/><path d="M7.49 11.82 L8.33 13.30"/>
-          </g>
-        </svg>
+        <!-- Shoe image: background stripped via canvas in JS below -->
+        <img id="shoe-img" class="scan-shoe" src="/shoe.jpg" alt="sneaker" crossorigin="anonymous">
       </div>
       <div class="verdict-card">
         <p class="v-label">AUTHENTICA CERTIFICATE</p>
@@ -359,7 +440,7 @@
   <h2 class="rv">Lock in 50% off. Forever.</h2>
   <p class="price-line rv"><b>$19.99/yr</b> <s>$39.99</s> · 3-day free trial</p>
   <p class="founder-tag rv">Limited to 500 founding spots — price never increases</p>
-  <!-- APP_STORE_LINK: wire up href once Apple approves listing -->
+  <!-- APP_STORE_LINK: swap <span> → <a href="LINK"> and remove pointer-events:none class once Apple approves -->
   <span class="store-badge-disabled rv" role="img" aria-label="App Store — coming soon">
     <span class="coming-soon-chip">Coming Soon</span>
     <svg viewBox="0 0 384 512" fill="currentColor" width="24" height="28"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
@@ -400,34 +481,197 @@
   </div>
 </footer>
 
+<!-- ════════ FOUNDING MEMBER POPUP ════════ -->
+<!--
+  APP → PAYWALL INTEGRATION GUIDE (for iOS team):
+  1. When user signs in with Apple, grab their email.
+  2. POST { email } to https://authenticabackend-production.up.railway.app/api/founding-check
+     (or query /api/waitlist — coordinate with backend team on the right endpoint).
+  3. If response { founding_member: true }, trigger Superwall campaign "founding_member"
+     which presents the locked $19.99/yr paywall.
+  4. Emails collected here are stored via /api/waitlist with source "landing_popup_founding".
+-->
+<div id="founding-popup" class="popup-overlay" role="dialog" aria-modal="true" aria-label="Get Founding Member access">
+  <div class="popup-card">
+    <button id="popup-close" class="popup-x" aria-label="Close">&#x2715;</button>
+
+    <div class="popup-header">
+      <svg width="20" height="23" viewBox="0 0 30 34" fill="none">
+        <path d="M15 1 L28 5 V17 C28 26 22.5 31 15 33 C7.5 31 2 26 2 17 V5 Z" stroke="#F07868" stroke-width="1.8"/>
+        <path d="M15 8 L15 5 M15 8 L10.5 23 M15 8 L19.5 23 M12 17.5 H18" stroke="#F07868" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      AUTHENTICA
+    </div>
+
+    <!-- mini app UI preview — two verdict cards -->
+    <div class="popup-verdicts">
+      <div class="popup-verdict-card">
+        <p class="pvc-label">Verdict</p>
+        <p class="pvc-verdict">AUTHENTIC</p>
+        <p class="pvc-conf">97%</p>
+      </div>
+      <div class="popup-verdict-card">
+        <p class="pvc-label">Confidence</p>
+        <p class="pvc-verdict">CERT ISSUED</p>
+        <p class="pvc-conf" style="font-size:16px;padding-top:4px">AUTH-7X29K</p>
+      </div>
+    </div>
+
+    <p class="popup-headline">LOCK IN 50% OFF<br>FOUNDING MEMBER PRICING</p>
+    <p class="popup-sub">Limited to 500 spots. <strong>$19.99/yr</strong> locked forever — never goes up.</p>
+
+    <div id="popup-form-wrap">
+      <form id="popup-form" novalidate>
+        <input id="popup-email" type="email" placeholder="Enter your email" autocomplete="email" required>
+        <button id="popup-btn" type="submit">Get Founding Member Access</button>
+      </form>
+      <p class="popup-fine">
+        By signing up you agree to our <a href="/terms.html">Terms of Service</a> and
+        <a href="/privacy.html">Privacy Policy</a>. No commitment. Cancel anytime.
+      </p>
+    </div>
+  </div>
+</div>
+
 <script>
-  // Confidence count-up (hero phone mockup)
+  // ── Shoe image: strip checkerboard background via Canvas ──────────────────
+  // Removes gray/white pixels (saturation < 0.22 && brightness > 140)
+  // while preserving the coral line-art of the shoe.
+  function stripShoeBackground(imgEl) {
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = imgEl.naturalWidth;
+      canvas.height = imgEl.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(imgEl, 0, 0);
+      const d = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const px = d.data;
+      for (let i = 0; i < px.length; i += 4) {
+        const r = px[i], g = px[i+1], b = px[i+2];
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const brightness = (r + g + b) / 3;
+        const saturation = max === 0 ? 0 : (max - min) / max;
+        if (brightness > 140 && saturation < 0.22) {
+          // Fade out near the threshold for soft edges
+          const fadeFactor = Math.min(1, (brightness - 140) / 60);
+          px[i+3] = Math.round(px[i+3] * (1 - fadeFactor));
+        }
+      }
+      ctx.putImageData(d, 0, 0);
+      imgEl.src = canvas.toDataURL('image/png');
+    } catch(e) {
+      // Canvas tainted or unsupported — image stays as-is
+    }
+  }
+  const shoeEl = document.getElementById('shoe-img');
+  if (shoeEl) {
+    if (shoeEl.complete && shoeEl.naturalWidth) stripShoeBackground(shoeEl);
+    else shoeEl.addEventListener('load', () => stripShoeBackground(shoeEl));
+  }
+
+  // ── Confidence count-up (hero phone mockup) ──────────────────────────────
   const conf = document.getElementById('conf');
   const bar = document.getElementById('confbar');
   const target = 97.3;
   let started = false;
-  function runCount(){
-    if(started) return; started = true;
-    if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+  function runCount() {
+    if (started) return; started = true;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
       conf.textContent = target.toFixed(1); bar.style.width = target + '%'; return;
     }
     const t0 = performance.now(), dur = 1800;
-    function tick(t){
-      const p = Math.min((t - t0)/dur, 1);
+    function tick(t) {
+      const p = Math.min((t - t0) / dur, 1);
       const eased = 1 - Math.pow(1 - p, 3);
       conf.textContent = (eased * target).toFixed(1);
-      if(p < 1) requestAnimationFrame(tick);
+      if (p < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
     bar.style.width = target + '%';
   }
   window.addEventListener('load', () => setTimeout(runCount, 500));
 
-  // Scroll reveals
+  // ── Scroll reveals ────────────────────────────────────────────────────────
   const io = new IntersectionObserver(es => es.forEach(e => {
-    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-  }), {threshold:.15});
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: .15 });
   document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  // ── Founding Member Popup ─────────────────────────────────────────────────
+  const POPUP_KEY = 'authentica_popup_dismissed';
+  const popup = document.getElementById('founding-popup');
+  const closeBtn = document.getElementById('popup-close');
+  const popupForm = document.getElementById('popup-form');
+  const popupEmailInput = document.getElementById('popup-email');
+  const popupBtn = document.getElementById('popup-btn');
+  const popupFormWrap = document.getElementById('popup-form-wrap');
+
+  // Show after 12 seconds unless user has already dismissed it
+  if (!localStorage.getItem(POPUP_KEY)) {
+    const delay = 10000 + Math.random() * 5000; // 10–15 seconds
+    setTimeout(() => {
+      popup.classList.add('visible');
+    }, delay);
+  }
+
+  function dismissPopup() {
+    localStorage.setItem(POPUP_KEY, '1');
+    popup.classList.remove('visible');
+  }
+
+  closeBtn.addEventListener('click', dismissPopup);
+
+  // Close on backdrop click
+  popup.addEventListener('click', (e) => {
+    if (e.target === popup) dismissPopup();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && popup.classList.contains('visible')) dismissPopup();
+  });
+
+  popupForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = popupEmailInput.value.trim();
+    if (!email) return;
+
+    popupBtn.disabled = true;
+    popupBtn.textContent = 'Saving…';
+
+    try {
+      const res = await fetch('https://authenticabackend-production.up.railway.app/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'landing_popup_founding' }),
+      });
+      // Accept any 2xx or a duplicate-email response as success
+      await res.json().catch(() => ({}));
+
+      // Success state
+      // APP_STORE_LINK: replace the disabled badge below with a live <a> once Apple approves
+      popupFormWrap.innerHTML = `
+        <div class="popup-success">
+          <div class="popup-success-icon">✓</div>
+          <p class="popup-success-title">You're locked in.</p>
+          <p class="popup-success-msg">
+            Download the app and sign in with <strong>${email}</strong> —
+            your founding member pricing activates automatically.
+          </p>
+          <span class="store-badge-disabled" style="margin:0 auto;display:inline-flex">
+            <span class="coming-soon-chip">Coming Soon</span>
+            <svg viewBox="0 0 384 512" fill="currentColor" width="20" height="24"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+            <span class="sb-text"><span class="sb-small" style="color:#555">Download on the</span><br><span class="sb-big" style="color:#0c0a09;font-size:15px">App Store</span></span>
+          </span>
+        </div>
+      `;
+      localStorage.setItem(POPUP_KEY, '1');
+    } catch (err) {
+      popupBtn.disabled = false;
+      popupBtn.textContent = 'Get Founding Member Access';
+    }
+  });
 </script>
 </body>
 </html>
