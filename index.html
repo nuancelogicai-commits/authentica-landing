@@ -257,6 +257,19 @@
   .popup-fine{font-size:11px;color:var(--muted);text-align:center;margin-top:11px;line-height:1.55}
   .popup-fine a{color:var(--muted);text-decoration:underline}
   .popup-fine a:hover{color:var(--bone)}
+  #popup-email-error{
+    font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+    color:#e05c4c;margin:-4px 0 8px;display:block;
+  }
+  #popup-form-wrap input[type="email"].invalid{border-color:#e05c4c}
+  @keyframes shake{
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-6px)}
+    40%{transform:translateX(6px)}
+    60%{transform:translateX(-4px)}
+    80%{transform:translateX(4px)}
+  }
+  .shake{animation:shake .35s ease}
   /* success state */
   .popup-success{text-align:center;padding:4px 0}
   .popup-success-icon{font-size:28px;margin-bottom:10px;color:var(--coral)}
@@ -520,7 +533,7 @@
     <p class="popup-sub">Limited to 500 spots. <strong>$19.99/yr</strong> locked forever — never goes up.</p>
 
     <div id="popup-form-wrap">
-      <form id="popup-form" novalidate>
+      <form id="popup-form">
         <input id="popup-email" type="email" placeholder="Enter your email" autocomplete="email" required>
         <button id="popup-btn" type="submit">Get Founding Member Access</button>
       </form>
@@ -534,9 +547,11 @@
 
 <script>
   // ── Shoe image: strip checkerboard background via Canvas ──────────────────
-  // Removes gray/white pixels (saturation < 0.22 && brightness > 140)
-  // while preserving the coral line-art of the shoe.
+  // Guard: if src is already a data URL we already processed it — bail out.
+  // This is critical: setting imgEl.src fires another load event, so without
+  // the guard this becomes an infinite loop that keeps the tab spinner running.
   function stripShoeBackground(imgEl) {
+    if (!imgEl.naturalWidth || imgEl.src.startsWith('data:')) return;
     try {
       const canvas = document.createElement('canvas');
       canvas.width = imgEl.naturalWidth;
@@ -552,7 +567,6 @@
         const brightness = (r + g + b) / 3;
         const saturation = max === 0 ? 0 : (max - min) / max;
         if (brightness > 140 && saturation < 0.22) {
-          // Fade out near the threshold for soft edges
           const fadeFactor = Math.min(1, (brightness - 140) / 60);
           px[i+3] = Math.round(px[i+3] * (1 - fadeFactor));
         }
@@ -565,8 +579,9 @@
   }
   const shoeEl = document.getElementById('shoe-img');
   if (shoeEl) {
-    if (shoeEl.complete && shoeEl.naturalWidth) stripShoeBackground(shoeEl);
-    else shoeEl.addEventListener('load', () => stripShoeBackground(shoeEl));
+    // {once: true} ensures this never re-fires after we reassign imgEl.src below
+    if (shoeEl.complete) stripShoeBackground(shoeEl);
+    else shoeEl.addEventListener('load', () => stripShoeBackground(shoeEl), { once: true });
   }
 
   // ── Confidence count-up (hero phone mockup) ──────────────────────────────
@@ -646,10 +661,36 @@
     if (e.key === 'Escape' && popup.classList.contains('visible')) dismissPopup();
   });
 
+  function showEmailError(msg) {
+    popupEmailInput.classList.add('invalid', 'shake');
+    popupEmailInput.addEventListener('animationend', () => popupEmailInput.classList.remove('shake'), { once: true });
+    let err = document.getElementById('popup-email-error');
+    if (!err) {
+      err = document.createElement('span');
+      err.id = 'popup-email-error';
+      popupEmailInput.insertAdjacentElement('afterend', err);
+    }
+    err.textContent = msg;
+    popupEmailInput.addEventListener('input', () => {
+      popupEmailInput.classList.remove('invalid');
+      const e = document.getElementById('popup-email-error');
+      if (e) e.remove();
+    }, { once: true });
+  }
+
+  // Simple RFC-ish email check — must have chars, @, domain, dot, extension
+  function isValidEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+  }
+
   popupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = popupEmailInput.value.trim();
-    if (!email) return;
+
+    if (!email || !isValidEmail(email)) {
+      showEmailError('Please enter a valid email address.');
+      return;
+    }
 
     popupBtn.disabled = true;
     popupBtn.textContent = 'Saving…';
