@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Authentica</title>
+  <style>html,body{margin:0;padding:0;background:#000}</style>
+</head>
+<body>
+<script>
+  var segments = window.location.pathname.split('/').filter(Boolean);
+  var code = segments[segments.length - 1] || '';
+  var APP_STORE = 'https://apps.apple.com/app/id6773045838';
+  var CLICK_URL = 'https://authenticabackend-production.up.railway.app/api/referral/click';
+
+  function go() { window.location.href = APP_STORE; }
+
+  if (code) {
+    fetch(CLICK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ referral_code: code })
+    }).then(go).catch(go);
+  } else {
+    go();
+  }
+</script>
+</body>
+</html>
