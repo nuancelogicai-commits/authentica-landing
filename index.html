@@ -158,6 +158,7 @@
   footer{border-top:1px solid var(--line);padding:54px 5vw;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
   .f-brand{display:flex;align-items:center;gap:12px;margin-bottom:14px}
   footer p,footer a{font-size:13px;color:var(--muted);text-decoration:none}
+  footer a{display:inline-block;padding:6px 0}
   footer a:hover{color:var(--bone)}
   .f-h{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--bone);margin-bottom:16px}
   footer li{list-style:none;margin-bottom:10px}
@@ -198,8 +199,9 @@
   .popup-x{
     position:absolute;top:14px;right:14px;
     background:none;border:none;font-size:18px;line-height:1;
-    color:var(--muted);cursor:pointer;padding:6px 9px;border-radius:50%;
+    color:var(--muted);cursor:pointer;padding:0;border-radius:50%;
     transition:background .15s,color .15s;
+    min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;
   }
   .popup-x:hover{background:var(--card2);color:var(--bone)}
   .popup-header{
@@ -340,7 +342,7 @@
   <span><b>&lt;20s</b> average verdict</span>
   <span><b>2</b> categories live · more coming</span>
   <span>Confidence + reasoning on <b>every scan</b></span>
-  <span>Built by <b>Gavari AI</b></span>
+  <span>Built by Gavari AI</span>
 </div>
 
 <!-- ════════ HOW IT WORKS ════════ -->
